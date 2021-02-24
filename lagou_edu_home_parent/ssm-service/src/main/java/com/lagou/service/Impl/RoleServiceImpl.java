@@ -1,10 +1,7 @@
 package com.lagou.service.Impl;
 
 import com.lagou.dao.RoleMapper;
-import com.lagou.domain.Menu;
-import com.lagou.domain.Role;
-import com.lagou.domain.RoleMenuVO;
-import com.lagou.domain.Role_menu_relation;
+import com.lagou.domain.*;
 import com.lagou.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,5 +71,18 @@ public class RoleServiceImpl implements RoleService {
         // 2. 删除角色
         roleMapper.deleteRoleContextMenu(id);
         roleMapper.deleteRole(id);
+    }
+
+    // 根据角色id获取关联资源信息
+    @Override
+    public List<ResourceCategory> findResourceListByRoleId(Integer roleId) {
+        // test
+        List<ResourceCategory> resourceCategoryList = roleMapper.findResourceCategoryIdsByRoleId(roleId);
+        for (ResourceCategory resourceCategory : resourceCategoryList) {
+            System.out.println(">>>>>>>>>>>>"+roleId+" , "+resourceCategory.getId()+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            List<Resource> resourceList = roleMapper.findResourceByResourceCategory(roleId, resourceCategory.getId());
+            resourceCategory.setResourceList(resourceList);
+        }
+        return resourceCategoryList;
     }
 }
