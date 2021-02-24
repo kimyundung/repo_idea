@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lagou.dao.MenuMapper">
+    <!--查询全部的父子菜单信息-->
+    <resultMap id="MenuResult" type="menu">
+        <id column="id" property="id"/>
+        <result column="href" property="href"/>
+        <result column="icon" property="icon"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="description" property="description"/>
+        <result column="orderNum" property="order_num"/>
+        <result column="shown" property="shown"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="updated_by" property="updatedBy"/>
+        <collection property="subMenuList" column="id" select="findSubMenuListByPid" ofType="menu"/>
+    </resultMap>
+    <select id="findSubMenuListByPid" parameterType="int" resultMap="MenuResult">
+        select * from menu where parent_id = #{pid}
+    </select>
+
+    <!--查询所有菜单-->
+    <select id="findAllMenu" resultType="menu">
+        select * from menu
+    </select>
+
+    <!--根据id查询菜单-->
+    <select id="findMenuById" parameterType="int" resultType="menu">
+        select * from menu where id = #{id}
+    </select>
+
+    <!--添加菜单-->
+    <insert id="saveMenu" parameterType="menu">
+        insert into menu values (
+        null,#{parentId},#{href},#{icon},#{name},#{description},#{orderNum},#{shown},#{level}
+        ,#{createdTime},#{updatedTime},#{createdBy},#{updatedBy}
+        )
+    </insert>
+
+    <!--更新菜单-->
+    <update id="updateMenu" parameterType="menu">
+        update menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="description!=null and description!=''">
+                description = #{description},
+            </if>
+            <if test="href!=null and href!=''">
+                href = #{href},
+            </if>
+            <if test="icon!=null and icon!=''">
+                icon = #{icon},
+            </if>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="orderNum!=null">
+                order_num = #{orderNum},
+            </if>
+            <if test="parentId!=null">
+                parent_id = #{parentId},
+            </if>
+            <if test="shown!=null">
+                shown = #{shown},
+            </if>
+            <if test="level!=null">
+                level = #{level},
+            </if>
+            <if test="updatedTime!=null">
+                updated_time = #{updatedTime},
+            </if>
+            <if test="updatedBy!=null and updatedBy!=''">
+                updated_by = #{updatedBy},
+            </if>
+        </trim>
+        <where>
+            <if test="id!=null">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+</mapper>
