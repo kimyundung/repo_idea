@@ -20,6 +20,5 @@ public interface RoleService {
     public void RoleContextMenu(RoleMenuVO roleMenuVO);
     // 删除角色
     public void deleteRole(Integer id);
-    // 根据角色id获取关联资源信息
-    public List<ResourceCategory> findResourceListByRoleId(Integer roleId);
+
 }

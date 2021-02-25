@@ -21,10 +21,6 @@ public interface RoleMapper {
     // 删除角色
     public void deleteRole(Integer id);
 
-    // 作业
-    // 根据角色id查询关联资源分类
-    public List<ResourceCategory> findResourceCategoryIdsByRoleId(Integer roleId);
-    // 根据获取到了资源分类, 查询资源
-    public List<Resource> findResourceByResourceCategory(Integer roleId, Integer categoryId);
+
 
 }

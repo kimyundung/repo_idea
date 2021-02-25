@@ -73,16 +73,4 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.deleteRole(id);
     }
 
-    // 根据角色id获取关联资源信息
-    @Override
-    public List<ResourceCategory> findResourceListByRoleId(Integer roleId) {
-        // test
-        List<ResourceCategory> resourceCategoryList = roleMapper.findResourceCategoryIdsByRoleId(roleId);
-        for (ResourceCategory resourceCategory : resourceCategoryList) {
-            System.out.println(">>>>>>>>>>>>"+roleId+" , "+resourceCategory.getId()+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-            List<Resource> resourceList = roleMapper.findResourceByResourceCategory(roleId, resourceCategory.getId());
-            resourceCategory.setResourceList(resourceList);
-        }
-        return resourceCategoryList;
-    }
 }
