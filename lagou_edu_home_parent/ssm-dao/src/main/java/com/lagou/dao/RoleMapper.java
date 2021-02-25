@@ -20,7 +20,4 @@ public interface RoleMapper {
     public void RoleContextMenu(Role_menu_relation role_menu_relation);
     // 删除角色
     public void deleteRole(Integer id);
-
-
-
 }
