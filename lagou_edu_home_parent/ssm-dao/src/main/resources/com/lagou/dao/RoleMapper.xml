@@ -68,5 +68,38 @@
         delete from roles where id = #{id}
     </delete>
 
+    <!--作业-->
+    <!--根据角色id查询关联资源分类-->
+    <select id="findResourceCategoryByRoleId" parameterType="int" resultType="ResourceCategory">
+        SELECT id,NAME
+        FROM (
+            SELECT DISTINCT r.`category_id`
+            FROM resource r
+            INNER JOIN role_resource_relation rr ON r.id=rr.`resource_id`
+            INNER JOIN roles ro ON ro.id=rr.`role_id`
+            WHERE ro.id=#{id}
+        ) a
+        LEFT JOIN resource_category rc
+        ON a.category_id=rc.`id`;
+    </select>
+
+    <!--根据获取到了资源分类, 查询资源-->
+    <select id="findResourceByRoleIdAndResourceCategoryId" parameterType="int" resultType="resource">
+        SELECT r.*
+        FROM resource r
+        INNER JOIN role_resource_relation rr ON r.id=rr.`resource_id`
+        INNER JOIN roles ro ON ro.id=rr.`role_id`
+        WHERE ro.id=#{arg0} AND r.category_id=#{arg1};
+    </select>
+    <!--根据角色id删除角色与资源中间表-->
+    <delete id="deleteRoleResourceRelationByRoleId" parameterType="int">
+        delete from role_resource_relation where role_id = #{roleId}
+    </delete>
+    <!--根据角色id与资源id集合创建角色与资源关系-->
+    <insert id="RoleResourceRelation" parameterType="Role_resource_relation">
+        insert into role_resource_relation values (
+        null,#{resourceId},#{roleId},#{createdTime},#{updatedTime},#{createdBy},#{updatedBy}
+        )
+    </insert>
 
 </mapper>

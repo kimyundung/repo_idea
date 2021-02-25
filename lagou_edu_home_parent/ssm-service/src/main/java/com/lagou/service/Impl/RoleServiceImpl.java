@@ -73,4 +73,38 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.deleteRole(id);
     }
 
+    // 根据角色id获取关联资源信息
+    @Override
+    public List<ResourceCategory> findResourceListByRoleId(Integer roleId) {
+        // 根据角色id获取资源分类
+        List<ResourceCategory> resourceCategoryList = roleMapper.findResourceCategoryByRoleId(roleId);
+        for (ResourceCategory resourceCategory : resourceCategoryList) {
+            List<Resource> resourceList = roleMapper.findResourceByRoleIdAndResourceCategoryId(roleId, resourceCategory.getId());
+            resourceCategory.setResourceList(resourceList);
+        }
+        return resourceCategoryList;
+    }
+
+    // 为角色分配菜单
+    @Override
+    public void RoleResourceRelation(RoleResourceVo roleResourceVo) {
+        // 1. 删除角色与资源中间表
+        roleMapper.deleteRoleResourceRelationByRoleId(roleResourceVo.getRoleId());
+        // 2. 重新建立角色与资源关系
+        List<Integer> resourceIdList = roleResourceVo.getResourceIdList();
+        Date date = new Date();
+        for (Integer resourceId : resourceIdList) {
+            // 准备 中间表 实例
+            Role_resource_relation role_resource_relation = new Role_resource_relation();
+            // 补全信息
+            role_resource_relation.setRoleId(roleResourceVo.getRoleId());
+            role_resource_relation.setResourceId(resourceId);
+            role_resource_relation.setCreatedTime(date);
+            role_resource_relation.setUpdatedTime(date);
+            role_resource_relation.setCreatedBy("system");
+            role_resource_relation.setUpdatedBy("system");
+            // 调用 mapper方法
+            roleMapper.RoleResourceRelation(role_resource_relation);
+        }
+    }
 }

@@ -20,4 +20,13 @@ public interface RoleMapper {
     public void RoleContextMenu(Role_menu_relation role_menu_relation);
     // 删除角色
     public void deleteRole(Integer id);
+
+    // 根据角色id查询关联资源分类
+    public List<ResourceCategory> findResourceCategoryByRoleId(Integer roleId);
+    // 根据获取到了资源分类和角色id, 查询资源
+    public List<Resource> findResourceByRoleIdAndResourceCategoryId(Integer roleId, Integer categoryId);
+    // 根据角色id删除角色与资源中间表
+    public void deleteRoleResourceRelationByRoleId(Integer roleId);
+    // 根据角色id与资源id创建角色与资源关系
+    public void RoleResourceRelation(Role_resource_relation role_resource_relation);
 }

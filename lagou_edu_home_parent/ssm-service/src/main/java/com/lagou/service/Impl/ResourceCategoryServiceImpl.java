@@ -50,7 +50,7 @@ public class ResourceCategoryServiceImpl implements ResourceCategoryService {
         resourceCategory.setUpdatedTime(new Date());
         resourceCategory.setUpdatedBy("system");
 
-        // 2.调用service方法
+        // 2.调用mapper方法
         resourceCategoryMapper.updateResourceCategory(resourceCategory);
     }
 
@@ -61,35 +61,4 @@ public class ResourceCategoryServiceImpl implements ResourceCategoryService {
         resourceCategoryMapper.deleteResourceCategoryById(id);
     }
 
-    // 根据角色id获取关联资源信息
-    @Override
-    public List<ResourceCategory> findResourceListByRoleId(Integer roleId) {
-        // test
-        List<ResourceCategory> resourceCategoryList = resourceCategoryMapper.findResourceCategoryIdsByRoleId(roleId);
-        for (ResourceCategory resourceCategory : resourceCategoryList) {
-            List<Resource> resourceList = resourceCategoryMapper.findResourceByResourceCategory(roleId, resourceCategory.getId());
-            resourceCategory.setResourceList(resourceList);
-        }
-        return resourceCategoryList;
-    }
-
-    // 为角色分配菜单
-    @Override
-    public void RoleResourceRelation(RoleResourceVo roleResourceVo) {
-        // 1. 删除角色与资源中间表
-        resourceCategoryMapper.deleteRoleResourceRelationByRoleId(roleResourceVo.getRoleId());
-        // 2. 重新建立角色与资源关系
-        List<Integer> resourceIdList = roleResourceVo.getResourceIdList();
-        Date date = new Date();
-        for (Integer resourceId : resourceIdList) {
-            Role_resource_relation role_resource_relation = new Role_resource_relation();
-            role_resource_relation.setRoleId(roleResourceVo.getRoleId());
-            role_resource_relation.setResourceId(resourceId);
-            role_resource_relation.setCreatedTime(date);
-            role_resource_relation.setUpdatedTime(date);
-            role_resource_relation.setCreatedBy("system");
-            role_resource_relation.setUpdatedBy("system");
-            resourceCategoryMapper.RoleResourceRelation(role_resource_relation);
-        }
-    }
 }

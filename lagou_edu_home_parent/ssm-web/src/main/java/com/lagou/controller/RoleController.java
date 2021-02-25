@@ -23,9 +23,6 @@ public class RoleController {
     @Autowired
     private MenuService menuService;
 
-    @Autowired
-    private ResourceCategoryService resourceCategoryService;
-
     // 查询所有角色+条件
     @RequestMapping("/findAllRole")
     public ResponseResult findAllRole(@RequestBody Role role){
@@ -79,15 +76,15 @@ public class RoleController {
     @RequestMapping("/findResourceListByRoleId")
     public ResponseResult findResourceListByRoleId(Integer roleId){
         // 调用service方法并响应结果
-        List<ResourceCategory> resourceCategoryList = resourceCategoryService.findResourceListByRoleId(roleId);
+        List<ResourceCategory> resourceCategoryList = roleService.findResourceListByRoleId(roleId);
         return new ResponseResult(true,200,"获取当前角色拥有的资源成功",resourceCategoryList);
     }
 
-    // 为角色分配菜单
+    // 为角色分配资源
     @RequestMapping("/roleContextResource")
     public ResponseResult roleContextResource(@RequestBody RoleResourceVo roleResourceVo){
         // 调用service方法并响应结果
-        resourceCategoryService.RoleResourceRelation(roleResourceVo);
+        roleService.RoleResourceRelation(roleResourceVo);
         return new ResponseResult(true,200,"成功为角色分配菜单",null);
     }
 }

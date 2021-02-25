@@ -17,8 +17,4 @@ public interface ResourceCategoryService {
     public void updateResourceCategory(ResourceCategory resourceCategory);
     // 根据id删除资源分类
     public void deleteResourceCategoryById(Integer id);
-    // 根据角色id获取关联资源信息
-    public List<ResourceCategory> findResourceListByRoleId(Integer roleId);
-    // 为角色分配菜单
-    public void RoleResourceRelation(RoleResourceVo roleResourceVo);
 }
