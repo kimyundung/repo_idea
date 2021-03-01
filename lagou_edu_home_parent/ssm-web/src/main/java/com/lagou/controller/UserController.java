@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,7 @@ public class UserController {
 
     // 用户登陆
     @RequestMapping("/login")
-    public ResponseResult login( User user, HttpServletRequest request) throws Exception {
+    public ResponseResult login(User user, HttpServletRequest request) throws Exception {
         User login = userService.login(user);
         ResponseResult result = null;
         if(login!=null){
@@ -88,6 +90,8 @@ public class UserController {
 
         String header_token = request.getHeader("Authorization");
 
+        HttpSession session = request.getSession();
+
         String session_token = (String) request.getSession().getAttribute("access_token");
 
         if(header_token.equals(session_token)){
@@ -98,9 +102,6 @@ public class UserController {
             return responseResult;
         } else {
             return new ResponseResult(false,400,"获取菜单信息失败",null);
-            // 调用service方法, 进行菜单和资源信息查询
-//            ResponseResult responseResult = userService.getUserPermissions(100030012);
-//            return responseResult;
         }
 
     }
