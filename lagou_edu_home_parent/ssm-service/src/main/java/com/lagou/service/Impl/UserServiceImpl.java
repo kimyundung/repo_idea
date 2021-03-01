@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         if(roleIds.size()>0){
             menuList = userMapper.findParentMenuByRoleId(roleIds);
             for (Menu menu : menuList) {
-                List<Menu> subMenuList = userMapper.findSubMenuByPid(menu.getParentId());
+                List<Menu> subMenuList = userMapper.findSubMenuByPid(menu.getId());
                 menu.setSubMenuList(subMenuList);
             }
             resourceList = userMapper.findResourceByRoleId(roleIds);

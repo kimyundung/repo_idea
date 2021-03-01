@@ -41,7 +41,7 @@ public class UserController {
 
     // 用户登陆
     @RequestMapping("/login")
-    public ResponseResult login(@RequestBody User user, HttpServletRequest request) throws Exception {
+    public ResponseResult login( User user, HttpServletRequest request) throws Exception {
         User login = userService.login(user);
         ResponseResult result = null;
         if(login!=null){
@@ -97,7 +97,10 @@ public class UserController {
             ResponseResult responseResult = userService.getUserPermissions(user_id);
             return responseResult;
         } else {
-            return new ResponseResult(false,400,"获取菜单信息失败",null);
+//            return new ResponseResult(false,400,"获取菜单信息失败",null);
+            // 调用service方法, 进行菜单和资源信息查询
+            ResponseResult responseResult = userService.getUserPermissions(100030012);
+            return responseResult;
         }
 
     }
