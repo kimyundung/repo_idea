@@ -28,7 +28,7 @@
     <!--根据用户id查询关联角色信息-->
     <select id="findUserRelationRoleById" parameterType="int" resultType="role">
         SELECT r.*
-        FROM USER u
+        FROM user u
         INNER JOIN user_role_relation ur
         ON u.id = ur.user_id
         INNER JOIN roles r
